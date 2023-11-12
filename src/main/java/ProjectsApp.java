@@ -17,7 +17,10 @@ public class ProjectsApp {
 	
 	//@formatter:on
 	private List<String> operations = List.of(
-			"1) Add a project"
+			"1) Add a project",
+			"2) List projects",
+			"3) Select a project"
+			
 		
 	);
 			
@@ -44,6 +47,18 @@ private void processUserSelections() {
 			     case 1:
 			    	 createProject();
 			    	 break;
+			    	 
+			     case 2:
+			    	 listProjects();
+			    	 break;
+			    	 
+			     
+			     case 3:
+			    	 selectProject();
+			    	 break;
+			    	 
+			    	 
+			    
 			    	 
 			    	 default:
 			    		 System.out.println("/n" + selection + " is not a valid selection. Try Again");
@@ -73,10 +88,40 @@ private int getUserSelection() {
 	 String projectName = getStringInput("Enter the project name");
 	 BigDecimal estimatedHours = getDecimalInput("Enter the estimated hours"); 
 	 BigDecimal actualHours = getDecimalInput("Enter the actual hours");
-	 Integer difficulty = getIntInput("Enter the roject difficulty (1-5)");
+	 Integer difficulty = getIntInput("Enter the roject difficulty (1-5)"); 
 	 String notes = getStringInput("Enter the project notes");
 	 
-	 Project project = new Project ();
+	 
+private void selectProject() {
+	listProjects();
+	Integer projectID = getIntInput("Enter a project ID to select a project");
+	
+	/* Unselect the current project. */
+	curProject = null;
+	
+	curProject = projectService.fetchProjectById(projectid);
+	
+}
+	 
+
+private Integer getIntInput(String string) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+
+private void listProjects() {
+	List<Project> projects = projectService.fetchAllProjects();
+	
+	System.out.println("\nProjects");
+	
+	projects.forEach(project -> System.out
+			.println(" " + project.getProjectId() + " :" + project.getProjectName()));
+}
+	
+
+
+     Project project = new Project ();
 	 
 	 project.setProjectName(projectName);
 	 project.setEstimatedHours(estimatedHours);
@@ -151,11 +196,20 @@ private String getStringInput(String prompt) {
 	string input = scanner.nextLine();
 	
 	return input.isBlank() ? null : input.trim();
-  }}
-
+  }
+ }
 }
 privatevoid printOperations() {
 	System.out.println("\nThese are available. Press ENTER to quit:");
 	
 	operations.forEach(line -> System.out.println("  " + line));
+	
+	
+	if(Objects.isNull(curProject)) {
+		System.out.println("\nYou are not working with a project.");
+		
+	}
+	else {
+		System.out.println("\nYou are working wtih project: " + curProjects);
+	}
 }
